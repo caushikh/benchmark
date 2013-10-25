@@ -1,0 +1,17 @@
+#Complex statistics
+#file Etot Ebond Eangle Eimpr Edihed Evdw Eelec
+# /raid1/home/bb/caushikh/benchmark/complex/proton_coord/2OT3.pdb -9249.1 697.989 2143.86 3080.69 2421.07 -2253.76 -15338.9
+#
+#
+#Proteins flexible interface energies
+#file Etot Evdw Eelec
+# /raid1/home/bb/caushikh/benchmark/complex/proton_coord/2OT3.pdb	0	0	0
+#
+#
+#Protein-Protein intermolecular energies
+#file Etot Evdw Eelec
+# /raid1/home/bb/caushikh/benchmark/complex/proton_coord/2OT3.pdb -350.112 -128.846 -221.266
+#
+#
+#Protein-Protein Buried_surface_area
+# /raid1/home/bb/caushikh/benchmark/complex/proton_coord/2OT3.pdb 2424.57

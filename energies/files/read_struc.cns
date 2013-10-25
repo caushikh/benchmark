@@ -1,0 +1,58 @@
+evaluate ($structurefile = "/raid1/home/bb/caushikh/benchmark/complex/proton_struct/1ACB.psf")
+structure @@$structurefile end     
+
+!for the rdc restraints:
+if ($Data.flags.sani = true) then
+  topology  @@/raid1/home/bb/caushikh/T60/run1/toppar/top_axis.pro end
+  parameter @@/raid1/home/bb/caushikh/T60/run1/toppar/par_axis.pro end
+  structure @@/raid1/home/bb/caushikh/T60/run1/toppar/tensor.psf end
+end if
+
+evaluate ($coorfile = "/raid1/home/bb/caushikh/T60/run1/begin/" + $Filenames.template)
+coor @@$coorfile 
+
+!read the parameter files:
+if ($toppar.par_nonbonded = "") then
+  evaluate ($toppar.par_nonbonded = "OPLSX")
+end if
+evaluate ($par_nonbonded = $toppar.par_nonbonded)
+
+eval($nchain1= 1)
+while ($nchain1 < $data.ncomponents) loop cloop1
+  eval($nchain2 = $nchain1 + 1)
+  eval($parstatus_$nchain2 = true)
+  while ($nchain2 <= $data.ncomponents) loop cloop2
+    if ($toppar.prot_par_$nchain2 eq $toppar.prot_par_$nchain1) then
+      eval($parstatus_$nchain2 = false)
+    end if
+    eval($nchain2 = $nchain2 + 1)
+  end loop cloop2
+  eval($nchain1 = $nchain1 + 1)
+end loop cloop1
+
+eval($nchain1= 1)
+while ($nchain1 <= $data.ncomponents) loop cloop1
+  evaluate ($par_nonbonded_$nchain1 = "/raid1/home/bb/caushikh/T60/run1/toppar/" + $toppar.prot_par_$nchain1)
+  eval($nchain1 = $nchain1 + 1)
+end loop cloop1
+
+parameter @@$par_nonbonded_1 end
+eval($nchain1= 2)
+while ($nchain1 <= $data.ncomponents) loop cloop1
+  if ($parstatus_$nchain1 = true) then
+    parameter @@$par_nonbonded_$nchain1 end
+  end if
+  eval($nchain1 = $nchain1 + 1)
+end loop cloop1
+
+parameter @@/raid1/home/bb/caushikh/T60/run1/toppar/ion.param end
+parameter @@/raid1/home/bb/caushikh/T60/run1/toppar/parallhdg.sol end
+
+parameter 
+  nbonds
+    nbxmod=5 atom cdie shift
+    cutnb=9.5 ctofnb=8.5 ctonnb=6.5 eps=1.0 e14fac=0.4 inhibit 0.25
+    wmin=0.5
+    tolerance  0.5
+  end
+end
